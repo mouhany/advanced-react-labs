@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import {
   Box,
@@ -11,14 +11,15 @@ import {
   Select,
   Textarea,
   VStack,
+  Spinner,
 } from "@chakra-ui/react";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
-import {useAlertContext} from "../context/alertContext";
+import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
-  const {isLoading, response, submit} = useSubmit();
+  const { isLoading, response, submit } = useSubmit();
   const { onOpen } = useAlertContext();
 
   const formik = useFormik({
@@ -26,7 +27,7 @@ const LandingSection = () => {
       firstName: "",
       email: "",
       type: "",
-      comment: ""
+      comment: "",
     },
     onSubmit: (values) => {
       submit("/submit", values);
@@ -48,7 +49,7 @@ const LandingSection = () => {
         onOpen("error", response.message);
       }
     }
-  }, [response, onOpen, formik])
+  }, [response, onOpen, formik]);
 
   return (
     <FullScreenSection
@@ -64,52 +65,63 @@ const LandingSection = () => {
         <Box p={6} rounded="md" w="100%">
           <form onSubmit={formik.handleSubmit}>
             <VStack spacing={4}>
-              <FormControl isInvalid={formik.touched.firstName && formik.errors.firstName}>
+              <FormControl
+                isInvalid={formik.touched.firstName && formik.errors.firstName}
+              >
                 <FormLabel htmlFor="firstName">Name</FormLabel>
                 <Input
                   id="firstName"
                   name="firstName"
-                  {...formik.getFieldProps('firstName')}
+                  {...formik.getFieldProps("firstName")}
                 />
                 <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
+              <FormControl
+                isInvalid={formik.touched.email && formik.errors.email}
+              >
                 <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   id="email"
                   name="email"
                   type="email"
-                  {...formik.getFieldProps('email')}
+                  {...formik.getFieldProps("email")}
                 />
                 <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={formik.touched.type && formik.errors.type}>
+              <FormControl
+                isInvalid={formik.touched.type && formik.errors.type}
+              >
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type" {...formik.getFieldProps("type")} >
-                  <option value="hireMe">
-                    Freelance project proposal
-                  </option>
+                <Select id="type" name="type" {...formik.getFieldProps("type")}>
+                  <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
                     Open source consultancy session
                   </option>
-                  <option value="other">
-                    Other
-                  </option>
+                  <option value="other">Other</option>
                 </Select>
                 <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={formik.touched.comment && formik.errors.comment}>
+              <FormControl
+                isInvalid={formik.touched.comment && formik.errors.comment}
+              >
                 <FormLabel htmlFor="comment">Your message</FormLabel>
                 <Textarea
                   id="comment"
                   name="comment"
                   height={250}
-                  {...formik.getFieldProps('comment')}
+                  {...formik.getFieldProps("comment")}
                 />
                 <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
-                { isLoading ? "Submitting" : "Submit"}
+                {isLoading ? (
+                  <>
+                    <Spinner size="sm" mr={2} />
+                    Submitting
+                  </>
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </VStack>
           </form>
