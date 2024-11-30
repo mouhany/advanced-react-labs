@@ -33,10 +33,12 @@ const LandingSection = () => {
       submit("/submit", values);
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required("Name is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      type: Yup.string().required("Type is required"),
-      comment: Yup.string().required("Message is required"),
+      firstName: Yup.string().required("Required"),
+      email: Yup.string().email("Invalid email address").required("Required"),
+      // type: Yup.string().required("Required"),
+      comment: Yup.string()
+        .min(25, "Must be at least 25 characters")
+        .required("Required"),
     }),
   });
 
@@ -74,7 +76,7 @@ const LandingSection = () => {
                   name="firstName"
                   {...formik.getFieldProps("firstName")}
                 />
-                <FormErrorMessage>Required</FormErrorMessage>
+                <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
               </FormControl>
               <FormControl
                 isInvalid={formik.touched.email && formik.errors.email}
@@ -86,11 +88,9 @@ const LandingSection = () => {
                   type="email"
                   {...formik.getFieldProps("email")}
                 />
-                <FormErrorMessage>Required</FormErrorMessage>
+                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
-              <FormControl
-                isInvalid={formik.touched.type && formik.errors.type}
-              >
+              <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
                 <Select id="type" name="type" {...formik.getFieldProps("type")}>
                   <option value="hireMe">Freelance project proposal</option>
@@ -99,7 +99,6 @@ const LandingSection = () => {
                   </option>
                   <option value="other">Other</option>
                 </Select>
-                <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
               <FormControl
                 isInvalid={formik.touched.comment && formik.errors.comment}
@@ -111,7 +110,7 @@ const LandingSection = () => {
                   height={250}
                   {...formik.getFieldProps("comment")}
                 />
-                <FormErrorMessage>Required</FormErrorMessage>
+                <FormErrorMessage>{formik.errors.comment}</FormErrorMessage>
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
                 {isLoading ? (

@@ -50,16 +50,15 @@ const Header = () => {
         headerElement.style.transform = "translateY(0)";
       }
       previousScrollPosition.current = currentScrollPosition;
-    }
+    };
 
     window.addEventListener("scroll", handleScroll);
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [])
+  }, []);
 
-  
   const handleClick = (anchor) => () => {
     const id = `${anchor}-section`;
     const element = document.getElementById(id);
@@ -92,20 +91,24 @@ const Header = () => {
           alignItems="center"
         >
           <nav>
-            <HStack>
-            {/* Add social media links based on the `socials` data */}
-            {socials.map(social => (
-              <a href={social.url} target="_blank">
-                <FontAwesomeIcon icon={ social.icon } size="2x" />
-              </a>))
-            }
+            <HStack spacing={8}>
+              {/* Add social media links based on the `socials` data */}
+              {socials.map((social) => (
+                <a href={social.url} target="_blank" key={social.icon}>
+                  <FontAwesomeIcon icon={social.icon} size="2x" />
+                </a>
+              ))}
             </HStack>
           </nav>
           <nav>
             <HStack spacing={8}>
               {/* Add links to Projects and Contact me section */}
-              <a href="#projects-section" onClick={handleClick}>Projects</a>
-              <a href="#contactme-section" onClick={handleClick}>Contact Me</a>
+              <a href="#projects-section" onClick={handleClick}>
+                Projects
+              </a>
+              <a href="#contactme-section" onClick={handleClick}>
+                Contact Me
+              </a>
             </HStack>
           </nav>
         </HStack>
